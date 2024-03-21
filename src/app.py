@@ -18,13 +18,13 @@ async def read_user_agent(user_agent: str = Header(None)):
     apple = "Mozilla/5.0 (iPhone; CPU iPhone OS 16_7_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1"
     android = "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Mobile Safari/537.36"
 
-    if user_agent == windows:
+    if "Windows" in user_agent:
         return RedirectResponse(url=target_apple)
 
-    if user_agent == apple:
+    if "iPhone" in user_agent:
         return RedirectResponse(url=target_apple)
 
-    if user_agent == android:
+    if "Android" in user_agent:
         return RedirectResponse(url=target_android)
 
 
@@ -32,9 +32,9 @@ HOST = "0.0.0.0"
 PORT = int("8000")
 
 # https://dashboard.ngrok.com/get-started/your-authtoken
-ngrok.set_auth_token(TOKEN)
+ngrok.set_auth_token("Token")
 public_url = ngrok.connect(PORT).public_url
-print(f"ngrok tunnel {UrlShortenTinyurl().shorten(public_url)}")
+print(f"ngrok tunnel {public_url + "/get_my_pussy"}")
 
 
 #app.include_router(auth_route)
