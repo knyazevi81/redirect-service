@@ -3,13 +3,17 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import RedirectResponse
 import uvicorn
 from pyngrok import ngrok
-from tinyurl import UrlShortenTinyurl
 
+from fastapi.responses import HTMLResponse
+
+#import nest_asyncio
+
+#nest_asyncio.apply()
 
 app = FastAPI()
 
 
-@app.get("/get_my_pussy")
+@app.get("/colizeumapp")
 async def read_user_agent(user_agent: str = Header(None)):
     target_android = "https://play.google.com/store/apps/details?id=com.colizeumarena.colizeum"
     target_apple = "https://apps.apple.com/us/app/colizeum/id6444331712"
@@ -25,21 +29,38 @@ async def read_user_agent(user_agent: str = Header(None)):
         return RedirectResponse(url=target_apple)
 
     if "Android" in user_agent:
-        return RedirectResponse(url=target_android)
+        return HTMLResponse(
+            """<!DOCTYPE html>
+                <html lang='en'>
+                <head>
+                    <meta charset='UTF-8'>
+                    <meta http-equiv='refresh' content='0;url=market://details?id=com.colizeumarena.colizeum'>
+                    <title>Redirecting...</title>
+                </head>
+                <body>
+                    <p>Redirecting to colizeum app in 1 seconds...</p>
+                </body>
+                </html>
+            """
+        )
+
+        #return HTMLResponse(
+        #    "<a href='market://details?id=com.colizeumarena.colizeum'>Открыть приложение в Google Play Store</a>"
+        #)
 
 
-HOST = "0.0.0.0"
-PORT = int("8000")
+#HOST = "0.0.0.0"
+#PORT = int("8000")
 
 # https://dashboard.ngrok.com/get-started/your-authtoken
-ngrok.set_auth_token("Token")
-public_url = ngrok.connect(PORT).public_url
-print(f"ngrok tunnel {public_url + "/get_my_pussy"}")
+#ngrok.set_auth_token("1lFNOAF629r6MfuaNUbM27WdUrF_4o6aRK3N9uF9Maaobj4SY")
+#public_url = ngrok.connect(PORT).public_url
+#print(f"ngrok tunnel {public_url + '/colizeumapp'}")
 
 
 #app.include_router(auth_route)
 #app.include_router(admin_route)
 
-if __name__ == '__main__':
-    print(f"API rinnung {HOST}:{PORT}")
-    uvicorn.run(app, host=HOST, port=PORT)
+#if __name__ == '__main__':
+#    print(f"API rinnung {HOST}:{PORT}")
+#    uvicorn.run(app, host=HOST, port=PORT)
