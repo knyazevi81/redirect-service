@@ -13,7 +13,7 @@ from fastapi.responses import HTMLResponse
 app = FastAPI()
 
 
-@app.get("/colizeumapp")
+@app.get("/")
 async def read_user_agent(user_agent: str = Header(None)):
     target_android = "https://play.google.com/store/apps/details?id=com.colizeumarena.colizeum"
     target_apple = "https://apps.apple.com/us/app/colizeum/id6444331712"
