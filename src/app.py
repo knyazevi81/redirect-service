@@ -21,6 +21,7 @@ async def read_user_agent(user_agent: str = Header(None)):
     windows = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
     apple = "Mozilla/5.0 (iPhone; CPU iPhone OS 16_7_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1"
     android = "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Mobile Safari/537.36"
+    mac = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15"
 
     if "Windows" in user_agent:
         return RedirectResponse(url=target_apple)
@@ -43,7 +44,8 @@ async def read_user_agent(user_agent: str = Header(None)):
                 </html>
             """
         )
-
+    else:
+        return RedirectResponse(url=target_apple)
         #return HTMLResponse(
         #    "<a href='market://details?id=com.colizeumarena.colizeum'>Открыть приложение в Google Play Store</a>"
         #)
