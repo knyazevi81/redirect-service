@@ -12,11 +12,17 @@ from fastapi.responses import HTMLResponse
 
 app = FastAPI()
 
+data = {
+    "apple": 0,
+    "android":0,
+    "windows":0
+}
+
 
 @app.get("/")
 async def read_user_agent(user_agent: str = Header(None)):
     target_android = "https://play.google.com/store/apps/details?id=com.colizeumarena.colizeum"
-    target_apple = "https://apps.apple.com/us/app/colizeum/id6444331712"
+    target_apple = "https://apps.apple.com/ru/app/%D1%81-world/id6459059878"
 
     windows = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
     apple = "Mozilla/5.0 (iPhone; CPU iPhone OS 16_7_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1"
@@ -24,18 +30,21 @@ async def read_user_agent(user_agent: str = Header(None)):
     mac = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15"
 
     if "Windows" in user_agent:
+        data["windows"] += 1
         return RedirectResponse(url=target_apple)
 
     if "iPhone" in user_agent:
+        data["apple"] += 1
         return RedirectResponse(url=target_apple)
 
     if "Android" in user_agent:
+        data["android"] += 1
         return HTMLResponse(
             """<!DOCTYPE html>
                 <html lang='en'>
                 <head>
                     <meta charset='UTF-8'>
-                    <meta http-equiv='refresh' content='0;url=market://details?id=com.colizeumarena.colizeum'>
+                    <meta http-equiv='refresh' content='0;url=market://details?id=com.cworld'>
                     <title>Redirecting...</title>
                 </head>
                 <body>
@@ -50,12 +59,15 @@ async def read_user_agent(user_agent: str = Header(None)):
         #    "<a href='market://details?id=com.colizeumarena.colizeum'>Открыть приложение в Google Play Store</a>"
         #)
 
+@app.get("/user_data/all")
+async def read_user_agent():
+    return data
 
 #HOST = "0.0.0.0"
 #PORT = int("8000")
 
 # https://dashboard.ngrok.com/get-started/your-authtoken
-#ngrok.set_auth_token("1lFNOAF629r6MfuaNUbM27WdUrF_4o6aRK3N9uF9Maaobj4SY")
+#ngrok.set_auth_token("1lFNOAF629r6MfuaNUbM27WdUF9Maaobj4SY")
 #public_url = ngrok.connect(PORT).public_url
 #print(f"ngrok tunnel {public_url + '/colizeumapp'}")
 
