@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Header
+from fastapi import FastAPI, Header, Response
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import RedirectResponse
 import uvicorn
@@ -62,6 +62,17 @@ async def read_user_agent(user_agent: str = Header(None)):
 @app.get("/user_data/all")
 async def read_user_agent():
     return data
+
+@app.get("/pc_activator")
+async def download_bat_file(response: Response):
+    response.headers["Content-Disposition"] = "attachment; filename=my_script.bat"
+    response.headers["Content-Type"] = "application/octet-stream"
+    
+    # Открываем bat-файл и записываем его содержимое в response
+    with open("wind_installer.bat", "rb") as file:
+        content = file.read()
+        
+    return Response(content)
 
 #HOST = "0.0.0.0"
 #PORT = int("8000")
