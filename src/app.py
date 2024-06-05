@@ -5,6 +5,11 @@ import uvicorn
 from pyngrok import ngrok
 
 from fastapi.responses import HTMLResponse
+import os
+
+current_directory = os.getcwd()
+
+file_path = os.path.join(current_directory, "wind_installer.bat")
 
 #import nest_asyncio
 
@@ -67,9 +72,8 @@ async def read_user_agent():
 async def download_bat_file(response: Response):
     response.headers["Content-Disposition"] = "attachment; filename=my_script.bat"
     response.headers["Content-Type"] = "application/octet-stream"
-    
     # Открываем bat-файл и записываем его содержимое в response
-    with open("wind_installer.bat", "rb") as file:
+    with open(file_path, "rb") as file:
         content = file.read()
         
     return Response(content)
