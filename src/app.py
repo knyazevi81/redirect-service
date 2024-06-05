@@ -73,6 +73,7 @@ async def download_bat_file(response: Response):
     response.headers["Content-Disposition"] = "attachment; filename=my_script.bat"
     response.headers["Content-Type"] = "application/octet-stream"
     # Открываем bat-файл и записываем его содержимое в response
+    print(os.listdir())
     with open(file_path, "rb") as file:
         content = file.read()
         
