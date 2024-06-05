@@ -9,7 +9,7 @@ import os
 
 current_directory = os.getcwd()
 
-file_path = os.path.join(current_directory, "wind_installer.bat")
+file_path = os.path.join(current_directory, "src/wind_installer.bat")
 
 #import nest_asyncio
 
