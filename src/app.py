@@ -49,7 +49,7 @@ async def read_user_agent(user_agent: str = Header(None)):
                 <html lang='en'>
                 <head>
                     <meta charset='UTF-8'>
-                    <meta http-equiv='refresh' content='0;url=market://details?id=com.cworld'>
+                    <meta http-equiv='refresh' content='0;url=market://details?id=com.c_world'>
                     <title>Redirecting...</title>
                 </head>
                 <body>
