@@ -26,7 +26,7 @@ data = {
 
 @app.get("/")
 async def read_user_agent(user_agent: str = Header(None)):
-    target_android = "https://play.google.com/store/apps/details?id=com.colizeumarena.colizeum"
+    target_android = "https://play.google.com/store/apps/details?id=com.c_world"
     target_apple = "https://apps.apple.com/ru/app/%D1%81-world/id6459059878"
 
     windows = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
@@ -41,23 +41,28 @@ async def read_user_agent(user_agent: str = Header(None)):
     if "iPhone" in user_agent:
         data["apple"] += 1
         return RedirectResponse(url=target_apple)
-
+    
     if "Android" in user_agent:
         data["android"] += 1
-        return HTMLResponse(
-            """<!DOCTYPE html>
-                <html lang='en'>
-                <head>
-                    <meta charset='UTF-8'>
-                    <meta http-equiv='refresh' content='0;url=market://details?id=com.c_world'>
-                    <title>Redirecting...</title>
-                </head>
-                <body>
-                    <p>Redirecting to colizeum app in 1 seconds...</p>
-                </body>
-                </html>
-            """
-        )
+        return RedirectResponse(url=target_android)
+
+    #if "Android" in user_agent:
+    #    data["android"] += 1
+    #    return HTMLResponse(
+    #        """<!DOCTYPE html>
+    #            <html lang='en'>
+    #            <head>
+    #                <meta charset='UTF-8'>
+    #                <meta http-equiv='refresh' content='0;url=market://details?id=com.c_world'>
+    #                <title>Redirecting...</title>
+    #            </head>
+    #            <body>
+    #                <p>Redirecting to colizeum app in 1 seconds...</p>
+    #            </body>
+    #            </html>
+    #        """
+    #    )
+    
     else:
         return RedirectResponse(url=target_apple)
         #return HTMLResponse(
